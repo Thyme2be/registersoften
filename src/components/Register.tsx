@@ -1,57 +1,71 @@
+"use client";
+
 import React from "react";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import Link from "next/link";
+
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+
+const formSchema = z.object({
+  username: z.string().min(2, {
+    message: "Username must be at least 2 characters.",
+  }),
+});
 
 const Register = () => {
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+    },
+  })
+ 
+  // 2. Define a submit handler.
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values)
+  }
+  
   return (
-    <form className=" mt-20 mb-6 ">
-      <h1 className=" text-4xl font-k2d font-bold ">สมัครสมาชิก</h1>
-      <div className="flex flex-col w-full gap-5 mt-5 ">
-        <div className="flex gap-5">
-          <input
-            type="text"
-            id="firstname"
-            name="firstname"
-            placeholder="ชื่อจริง *"
-            className="border-1 px-3 py-2 flex-1"
+    <>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="username"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Username</FormLabel>
+                <FormControl>
+                  <Input placeholder="shadcn" {...field} />
+                </FormControl>
+                <FormDescription>
+                  This is your public display name.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-          <input
-            type="text"
-            id="lastname"
-            name="lastname"
-            placeholder="นามสกุล *"
-            className="border-1 px-3 py-2 flex-1"
-          />
-        </div>
-
-        <input
-          type="text"
-          id="email"
-          name="email"
-          placeholder="อีเมล *"
-          className="border-1 px-3 py-2 "
-        />
-        <input
-          type="text"
-          id="studentId"
-          name="studentId"
-          placeholder="รหัสประจำตัวนักศึกษา *"
-          className="border-1 px-3 py-2 "
-        />
-
-        <div className="flex gap-5">
-          <input
-            type="text"
-            id="dateOfBirth"
-            name="dateOfBirth"
-            placeholder="วว/ดด/ปปปป เกิด *"
-            className="border-1 px-3 py-2 flex-1"
-          />
-          <div className=" px-3 flex-1 mt-1 text-center ">
-            <Button variant="outline" className=" bg-gray-200 px-14 rounded-3xl font-bold font-k2d cursor-pointer ">รีเซ็ต</Button>
-          </div>
-        </div>
-      </div>
-    </form>
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </>
   );
 };
 
