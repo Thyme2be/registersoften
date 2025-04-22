@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 const Register = () => {
   return (
-    <div className=" mt-20 mb-6 ">
+    <form className=" mt-20 mb-6 ">
       <h1 className=" text-4xl font-k2d font-bold ">สมัครสมาชิก</h1>
       <div className="flex flex-col w-full gap-5 mt-5 ">
         <div className="flex gap-5">
@@ -51,7 +51,7 @@ const Register = () => {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 };
 
